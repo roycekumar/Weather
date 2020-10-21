@@ -215,6 +215,10 @@
       padding-left:20px; 
   }
   #locate{
-      width: 100px !important;
-      height: 300px !important;
+      width: 600px !important;
+      height: 100px !important;
+      font-size: 34px;
+      border-top-left-radius: 25px;
+      border-bottom-right-radius: 25px;
+      outline: none;
   }
