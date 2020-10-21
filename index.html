@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap" rel="stylesheet">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.5.0-1/css/all.min.css" integrity="sha512-xEGx3E22YcUzfX525T3KV7SqNexb09E2CckB6lBB/dT930VlbSX9JnQlLiogtSLAl9yGAJGKDu7O1ZanrqljGg==" crossorigin="anonymous"/>
+    </head>
+<body>
+    <div class="box" id="total">
+        <div class="wave -one"></div>
+        <div class="wave -two"></div>
+        <div class="wave -three"></div>
+        <div id="weathercon">
+        
+        </div>
+        <div class="info">
+            <h2 class="location" id="loca"></h2>
+            <p id="date"></p>
+            <h1 class="temp" id="temper"></h1>
+            <h3 class="tempmin_max" id="min_max_temp" style="font-size: 22px;"></h3>
+        </div>
+    </div>
+<script>
+    const curDate=document.getElementById("date");
+    let weathercon=document.getElementById("weathercon");
+    const tempStatus="Clouds";
+    const getCurrentDay=()=>{
+        var weekday = new Array(7);
+weekday[0] = "SUN";
+weekday[1] = "MON";
+weekday[2] = "TUE";
+weekday[3] = "WED";
+weekday[4] = "THU";
+weekday[5] = "FRI";
+weekday[6] = "SAT";
+        let currentTime=new Date();
+        let day=weekday[currentTime.getDay()];
+        return day;
+        console.log(day);
+    };
+    const getCurrentTime=()=>{
+        var now=new Date();
+        var months =["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+        var month=months[now.getMonth()];
+        var date=now.getDate();
+        let hours=now.getHours();
+        let mins=now.getMinutes();
+        let perios="AM";
+        if(hours>12){
+            perios="PM";
+            hours-=12;
+        }
+        else{
+            perios="AM";
+        }
+        if(mins<10){
+            mins="0"+mins;
+        }
+        console.log(month+" "+date)
+        console.log(hours+":"+mins+perios)
+        var month_and_time=month+" "+date+" | "+hours+":"+mins+perios;
+        return month_and_time;
+    };
+
+curDate.innerHTML=getCurrentDay()+" | "+getCurrentTime();
+var temperature=0;
+var min_max_temperature=0;
+var country_state=0;
+var city="";
+function getWeather(temperature){
+   /* if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(getLocation);
+  } else {
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }*/
+
+    let api="https://api.weatherapi.com/v1/current.json?key=b1a5375ab8b2452e80e125014202110&q=paris";
+    fetch(api).then(function(response){
+        let data=response.json();
+        return data;
+    }).then(function(data){
+      console.log(data);
+      
+        temperature=Math.floor(data.current.temp_c)+"°C";
+        console.log(temperature)
+        country_state=data.location.name+","+data.location.country[0]+data.location.country[1].toUpperCase();;
+        console.log(country_state)
+        document.getElementById("temper").innerHTML=temperature;
+        document.getElementById("loca").innerHTML="<i class='fas fa-street-view'></i>"+country_state;
+        document.getElementById("weathercon").innerHTML="<img width='110' height='100' src='"+data.current.condition.icon+"'>"
+        if(screen.width>300 && screen.width<600){
+            console.log(data);
+            console.log(curDate);
+            document.getElementById("total").style.width="100%";
+            document.getElementById("total").style.height="90%";
+            document.getElementById("date").style.fontSize="43px";
+            document.getElementById("loca").style.fontSize="83px";
+            document.getElementById("temper").style.fontSize="73px";
+            document.getElementById("min_max_temp").style.fontSize="73px";
+            document.getElementById("temper").innerHTML="<br>"+temperature+"<br><br>"
+            document.getElementById("date").innerHTML="<br>"+document.getElementById("date").innerHTML;
+            document.getElementById("weathercon").innerHTML="<img width='380' height='380' id='my_rain' src='"+data.current.condition.icon+"'>"
+            document.querySelector(".wave").style.marginTop="-500px";
+            document.querySelector(".wave").setAttribute("id", "change")
+            document.querySelector(".wave -two").style.marginTop="-1000px";
+        }
+    });
+  }
+getWeather();
+    </script>
+    <style>
+* {
+    padding: 0;
+    margin: 0;
+    /* font-family: "Jost", sans-serif; */
+    font-family: "Quicksand", sans-serif;
+  }
+#change{
+  width: 1500px;
+  height: 1500px;
+  margin-left:-690px !important;
+  margin-bottom: -900px !important;
+}
+  body {
+    background: #f3f2ef;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    height: 100vh;
+    width: 100vw;
+    font-family: 'Quicksand', sans-serif;
+  }
+
+  html,
+  body {
+    font-size: 62.5%;
+    height: 100%;
+  }
+
+  html {
+    background: #eee;
+  }
+
+  .box {
+    width: 20vw;
+    height: 60vh;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.2rem 3rem rgba(0, 0, 0, 0.2);
+    background: #a5bbdd;
+    position: relative;
+    overflow: hidden;
+    transform: translate3d(0, 0, 0);
+    min-width: 20rem;
+    min-height: 35rem;
+  }
+
+  .wave {
+    opacity: 0.3;
+    position: absolute;
+    top: 120%;
+    left: 50%;
+    background: white;
+    width: 50rem;
+    height: 50rem;
+    margin-left: -25rem;
+    margin-top: -25rem;
+    transform-origin: 50% 48%;
+    border-radius: 43%;
+    animation: drift 3000ms infinite linear;
+    z-index: 1;
+  }
+#city{
+    width: 200px;
+    height: 50px;
+    font-size: 24px;
+}
+  .wave.-three {
+    animation: drift 5000ms infinite linear;
+    z-index: 2 !important;
+    opacity: 0.2;
+  }
+
+  .wave.-two {
+    animation: drift 7000ms infinite linear;
+    opacity: 0.1;
+    z-index: 3 !important;
+  }
+
+  .box:after {
+    content: "";
+    display: block;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 11;
+    transform: translate3d(0, 0, 0);
+  }
+
+  @keyframes drift {
+    from {
+      transform: rotate(0deg);
+    }
+    from {
+      transform: rotate(360deg);
+    }
+  }
+  .info {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 45%;
+    z-index: 4;
+  }
+
+  .location {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-weight: 800;
+    font-size: 3rem;
+  }
+
+  .fa-street-view {
+    animation: rotates 3s linear infinite alternate;
+  }
+
+  @keyframes rotates {
+    from {
+      transform: translateX(-0.5rem);
+    }
+    to {
+      transform: translateX(0.5rem);
+    }
+  }
+
+  #date {
+    text-align: center;
+    margin-top: 0.5rem;
+    color: #57606f;
+    font-size: 17px;
+    font-weight: 300;
+    text-transform: uppercase;
+  }
+
+  .temp {
+    margin-top: 2.5rem;
+    text-align: center;
+    font-size: 3rem;
+  }
+
+  .tempmin_max {
+    text-align: center;
+    margin-top: 0.3rem;
+    font-weight: 300;
+    font-size: 1.2rem;
+    color: #57606f;
+  }
+
+  #weathercon {
+    height: 55%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+  }
+
+  #weathercon {
+    font-size: 6rem;
+    animation: fas-anime 3s linear infinite alternate;
+  }
+
+  @keyframes fas-anime {
+    from {
+      transform: scale(1.1);
+    }
+    to {
+      transform: scale(1.8);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .box {
+      width: 90vw;
+      height: 80vh;
+    }
+
+    .wave {
+      top: 85%;
+    }
+
+    #weathercon,.fas {
+      font-size: 5em;
+    }
+
+    .info {
+      font-size: 1.5rem;
+    }
+  }
+  @media (max-height: 500px) {
+    .box {
+      height: 80vh;
+    }
+
+    .wave {
+      top: 115%;
+    }
+  }
+  body > span {
+    width: 100vw;
+    text-align: center;
+    color: grey;
+  }
+  #my_rain{
+    margin-left: 10px;
+  }
+
+  
+    </style>
+</body>
+</html>
