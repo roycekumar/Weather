@@ -158,6 +158,18 @@
     font-size: 6rem;
     animation: fas-anime 3s linear infinite alternate;
   }
+  #logo {
+    height: 55%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+  }
+
+  #logo {
+    font-size: 6rem;
+    animation: fas-anime 3s linear infinite alternate;
+  }
 
   @keyframes fas-anime {
     from {
@@ -178,7 +190,7 @@
       top: 85%;
     }
 
-    #weathercon,.fas {
+    #weathercon,.fas,#logo {
       font-size: 5em;
     }
 
@@ -221,4 +233,7 @@
       border-top-left-radius: 25px;
       border-bottom-right-radius: 25px;
       outline: none;
+  }
+  .my{
+    margin-left: 100px;
   }

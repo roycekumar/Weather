@@ -6,8 +6,10 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.5.0-1/css/all.min.css" integrity="sha512-xEGx3E22YcUzfX525T3KV7SqNexb09E2CckB6lBB/dT930VlbSX9JnQlLiogtSLAl9yGAJGKDu7O1ZanrqljGg==" crossorigin="anonymous"/>
     </head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.min.js" integrity="sha512-WIklPM6qPCIp6d3fSSr90j+1unQHUOoWDS4sdTiR8gxUTnyZ8S2Mr8e10sKKJ/bhJgpAa/qG068RDkg6fIlNFA==" crossorigin="anonymous"></script>
 <body>
-  <input placeholder="City Name" onchange="getWeather()" class="my_input">
+    <i class="fas fa-sun-haze"></i>
+  <input placeholder="City Name" onchange="getWeather()" class="my_input" value="New York">
     <div class="box" id="total">
         <div class="wave -one"></div>
         <div class="wave -two"></div>
@@ -19,6 +21,20 @@
             <h2 class="location" id="loca"></h2>
             <p id="date"></p>
             <h1 class="temp" id="temper"></h1>
+            <h3 class="tempmin_max" id="min_max_temp" style="font-size: 22px;"></h3>
+        </div>
+    </div>
+    <div class="box my" id="total">
+        <div class="wave -one"></div>
+        <div class="wave -two"></div>
+        <div class="wave -three"></div>
+        <div id="logo">
+        
+        </div>
+        <div class="info">
+            <h2 class="location" id="humi"></h2>
+            <p id="date"><br> </p>
+            <h1 class="temp" id="feel"></h1>
             <h3 class="tempmin_max" id="min_max_temp" style="font-size: 22px;"></h3>
         </div>
     </div>
@@ -71,14 +87,12 @@ var temperature=0;
 var min_max_temperature=0;
 var country_state=0;
 var city="";
-
+function draw(){
+    getWeather();
+}
 function getWeather(temperature){
-/* if (navigator.geolocation) {
-navigator.geolocation.getCurrentPosition(getLocation);
-} else {
-x.innerHTML = "Geolocation is not supported by this browser.";
-}*/
-if(screen.width>300 && screen.width<600){
+curDate.innerHTML=getCurrentDay()+" | "+getCurrentTime();
+if(screen.width>300 && screen.width<800){
   console.log(curDate);
   document.querySelector(".my_input").setAttribute("id", "locate");
         document.getElementById("total").style.width="100%";
@@ -95,6 +109,7 @@ if(screen.width>300 && screen.width<600){
 else{
   document.querySelector(".my_input").setAttribute("id", "city");
 }
+
 var text=document.querySelector(".my_input").value;
 let api="https://api.weatherapi.com/v1/current.json?key=b1a5375ab8b2452e80e125014202110&q="+text;
 fetch(api).then(function(response){
@@ -102,13 +117,16 @@ fetch(api).then(function(response){
     return data;
 }).then(function(data){
   console.log(data);
-  
+  console.log(api);
     temperature=Math.floor(data.current.temp_c)+"°C";
     console.log(temperature)
     country_state=data.location.name+","+data.location.country[0]+data.location.country[1].toUpperCase();;
     console.log(country_state)
     document.getElementById("temper").innerHTML=temperature;
+   document.getElementById("humi").innerHTML="Humidity : "+data.current.humidity;
+   document.getElementById("feel").innerHTML="Feels Like : "+data.current.feelslike_c+"°C";
     document.getElementById("loca").innerHTML="<i class='fas fa-street-view'></i>"+country_state;
+    document.getElementById("logo").innerHTML="<img width='110' height='100' src='"+data.current.condition.icon+"'>"
     document.getElementById("weathercon").innerHTML="<img width='110' height='100' src='"+data.current.condition.icon+"'>"
     if(screen.width>300 && screen.width<600){
         document.getElementById("weathercon").innerHTML="<img width='380' height='380' id='my_rain' src='"+data.current.condition.icon+"'>"
