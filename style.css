@@ -135,14 +135,14 @@
   .temp {
     margin-top: 2.5rem;
     text-align: center;
-    font-size: 3rem;
+    font-size: 8rem;
   }
 
   .tempmin_max {
     text-align: center;
     margin-top: 0.3rem;
     font-weight: 300;
-    font-size: 1.2rem;
+    font-size: 8.2rem;
     color: #57606f;
   }
 
